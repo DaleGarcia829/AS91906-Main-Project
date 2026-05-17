@@ -1,0 +1,48 @@
+from os.path import exists
+import pygame
+import debug
+
+class ImageList():
+    def __init__(self,filename,width,height, image_type= 'jpg'):
+        self._images=[]
+        count = 0
+        debug.dprint(2,"filename:" + filename+str(count) + '.' + image_type, exists(filename+str(count) + '.' + image_type))
+        while exists(filename+str(count) + '.' + image_type):
+            image = pygame.image.load(filename+str(count) + '.' + image_type)
+            debug.dprint(2, "image " + filename+str(count) + '.' + image_type + " loaded")
+            scaled = pygame.transform.smoothscale(image,[width,height])
+            self._images.append(scaled)
+            debug.dprint(2,self._images[-1])
+            count += 1
+        
+    def get_images(self):
+        return self._images
+    images=property(get_images,None,None)
+
+# testing code
+debug.DEBUG_LEVEL= 0
+if __name__=="__main__":
+    TEXT_X= 50
+    TEXT_Y= 50
+    TEXT_W= 50
+    TEXT_H= 50
+    image_obj= ImageList("images\\test",64,64, "jpg")
+
+    pygame.init()
+    screen= pygame.display.set_mode((640,480), pygame.RESIZABLE)
+    debug.dprint(1, "image list test class created")
+
+    quitting = False
+    # main program loop
+    while not quitting:
+        # check event queue
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quitting = True
+
+        image_Rect= pygame.Rect(TEXT_X,TEXT_Y,TEXT_W,TEXT_H)
+        screen.blit(image_obj.images[0], image_Rect)
+        pygame.display.flip()
+
+    pygame.quit()
+    quit()

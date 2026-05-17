@@ -30,7 +30,7 @@ class Settings():
         # check for file and load settings
 
     def write_settings(self):
-        result= write_json(self._filename,self._settings)
+        result = write_json(self._filename,self._settings)
 
     def write_json(self,filename,object):
         try: 
