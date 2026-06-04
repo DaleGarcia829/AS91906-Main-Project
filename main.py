@@ -11,9 +11,9 @@ WHITE = ("#F9F6EE")
 #class defs (ex.button)
 class MainMenu:
     def __init__(self, screen_w, screen_h):
-        self.screen_w = screen_w
-        self.screen_h = screen_h
-        self.buttons = []
+        self._screen_w = screen_w
+        self._screen_h = screen_h
+        self._buttons = []
         self._build_menu()
 
     def _build_menu(self):
@@ -27,18 +27,37 @@ class MainMenu:
         for i, label in enumerate(menu_items):
             y_pos = start_y + (i * spacing)
             button = Button(x_pos, y_pos, button_w, button_h, label)
-            self.buttons.append(button)
+            self._buttons.append(button)
     def draw(self, surface):
         surface.fill(pygame.Color('#4ca626'))
         
        
         title_font = pygame.font.Font('freesansbold.ttf', 48)
         title_surf = title_font.render("MAIN MENU", True, pygame.Color('White'))
-        title_rect = title_surf.get_rect(center=(self.screen_w // 2, 100))
+        title_rect = title_surf.get_rect(center=(self._screen_w // 2, 100))
         surface.blit(title_surf, title_rect)
         
         for button in self.buttons:
             button.draw(surface)
+class Game():
+    def __init__(self):
+        pygame.init()
+        self._width = 480
+        self._height = 400
+        self._screen = pygame.display.set_mode((self._width, self._height))
+        pygame.display.set_caption("Snake")
+        
+        self._clock = pygame.time.Clock()
+        self._running = True
+        self._current_state = "menu"
+
+        self._main_menu = MainMenu(self._width,self._height)
+    
+    def run(self):
+        while self._running:
+            coords = pygame.mouse.get_pos()
+
+            for even in pygame.event.get():
 #function defs
 
 
