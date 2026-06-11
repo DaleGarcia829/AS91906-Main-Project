@@ -1,6 +1,7 @@
 #import pygame,mysprite, imagelist, debug
 import pygame
 from button import Button
+from mysprite import MySprite
 #constants
 SCREEN_X= 1000
 SCREEN_Y= 625
@@ -43,10 +44,28 @@ class MainMenu:
         for button in self._buttons:
             button.draw(surface)
 
+class Snake ():
+    UP = 0
+    DOWN = 1
+    LEFT = 2
+    RIGHT = 3
+    VECTOR = [(0, -1), (0,1), (1, 0), (-1,0)]
+    def __init__(self, x, y, dir=UP):
+        self._x = x
+        self._y = y
+        self._dir = dir
+    def reset (self):
+        # create empty snake
+        self._seg_list = []
+        # create head snake
+        self._seg_list.append(MySprite())
+        # create tail snake
+        self._seg_list.append(MySprite())
 
-       
 
 
+
+    
             
 
 
