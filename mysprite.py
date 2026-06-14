@@ -133,6 +133,7 @@ class MySprite():
 
 # testing code
 debug.DEBUG_LEVEL= 0
+# note:is this file the one we're running as our main program
 if __name__=="__main__":
     # starting up pygame
     pygame.init()
