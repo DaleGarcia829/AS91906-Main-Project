@@ -14,7 +14,8 @@ class ImageList():
             self._images.append(scaled)
             debug.dprint(2,self._images[-1])
             count += 1
-        
+        if count == 0:
+            debug.dprint(0, f"Images with prefix {filename} failed to load.")
     def get_images(self):
         return self._images
     images=property(get_images,None,None)
@@ -26,7 +27,7 @@ if __name__=="__main__":
     TEXT_Y= 50
     TEXT_W= 50
     TEXT_H= 50
-    image_obj= ImageList("images\\test",64,64, "jpg")
+    image_obj= ImageList("images\\test",TEXT_W,TEXT_H, "jpg")
 
     pygame.init()
     screen= pygame.display.set_mode((640,480), pygame.RESIZABLE)
@@ -39,10 +40,12 @@ if __name__=="__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quitting = True
-
-        image_Rect= pygame.Rect(TEXT_X,TEXT_Y,TEXT_W,TEXT_H)
-        screen.blit(image_obj.images[0], image_Rect)
-        pygame.display.flip()
+        count = 0
+        while count < len(image_obj.images):
+            image_Rect= pygame.Rect(TEXT_X +(count*TEXT_H), TEXT_Y, TEXT_W, TEXT_H)
+            screen.blit(image_obj.images[count], image_Rect)
+            count+=1
+            pygame.display.flip()
 
     pygame.quit()
     quit()
