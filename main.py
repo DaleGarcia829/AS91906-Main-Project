@@ -5,6 +5,7 @@ from mysprite import MySprite
 #constants
 SCREEN_X= 1000
 SCREEN_Y= 625
+TILESIZE = 16
 WINDOW_MODE= pygame.RESIZABLE
 
 BG_COLOR = ("#4ca626")
@@ -49,18 +50,36 @@ class Snake ():
     DOWN = 1
     LEFT = 2
     RIGHT = 3
-    VECTOR = [(0, -1), (0,1), (1, 0), (-1,0)]
-    def __init__(self, x, y, dir=UP):
+    VECTOR = [(0, -1), (0,1), (-1, 0), (1,0)]
+    HEAD = 0
+    TAIL = -1
+    def __init__(self, x, y, screen, dir=UP):
         self._x = x
         self._y = y
         self._dir = dir
+        self._screen = screen
     def reset (self):
         # create empty snake
         self._seg_list = []
         # create head snake
-        self._seg_list.append(MySprite())
+        self._seg_list.append(MySprite(self._x, self._y, self._w, self._h, self._images, self._screen))
         # create tail snake
-        self._seg_list.append(MySprite())
+        self._seg_list.append(MySprite(self._x, self._y, self._w, self._h, self._images, self._screen))
+
+    def update(self):
+
+            # delete tail
+            # create new head
+        self._seg_list.insert(Snake.HEAD, MySprite(self._x, self._y, self._w, self._h, self._images, self._screen))
+        self._x += Snake.VECTOR[self._dir][0]*TILESIZE
+
+        if self._grow:
+            self._seg_list.pop(Snake.TAIL)       
+
+    def draw(self):
+        for segment in self._seg_list:
+            segment.draw()
+
 
 
 
