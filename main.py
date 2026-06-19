@@ -5,15 +5,16 @@ from imagelist import ImageList
 from gameplay import MainGame
 
 # Screen size setup
-SCREEN_X= 1000
+SCREEN_X= 700
 SCREEN_Y= 625
 TILESIZE = 16
 WINDOW_MODE= pygame.RESIZABLE
+FONT_SIZE = 48
 
 BG_COLOR = ("#4ca626")
 WHITE = ("#F9F6EE")
 
-class MainMenu:
+class MainMenu():
     def __init__(self, screen_w, screen_h):
         self._screen_w = screen_w
         self._screen_h = screen_h
@@ -36,12 +37,12 @@ class MainMenu:
             self._buttons.append(button)
 
     def draw(self, surface):
-        surface.fill(pygame.Color('#4ca626'))
+        surface.fill(pygame.Color(BG_COLOR))
         
         # Drawing the big main title text
-        title_font = pygame.font.Font('freesansbold.ttf', 48)
-        title_surf = title_font.render("SNAKE GAME!", True, pygame.Color('White'))
-        title_rect = title_surf.get_rect(center=(self._screen_w // 2, 100))
+        title_font = pygame.font.Font('freesansbold.ttf', FONT_SIZE)
+        title_surf = title_font.render("SNAKE GAME!", True, pygame.Color(WHITE))
+        title_rect = title_surf.get_rect(center=(self._screen_w // 2, FONT_SIZE))
         surface.blit(title_surf, title_rect)
         
         # Draw all 4 buttons from our list
@@ -113,7 +114,7 @@ if __name__ == "__main__":
     
     main_menu = MainMenu(SCREEN_X, SCREEN_Y)
     
-    player_snake = Snake(game_surface, 0, 0, TILESIZE, TILESIZE, ["images\\test"])
+    player_snake = Snake(game_surface,500, 50, TILESIZE, TILESIZE, ["images\\test"])
     
   
     game_screen = MainGame(SCREEN_X, SCREEN_Y, TILESIZE)
@@ -146,7 +147,7 @@ if __name__ == "__main__":
                 if event.key == pygame.K_F11 or (event.key == pygame.K_RETURN and (event.mod & pygame.KMOD_ALT)):
                     is_fullscreen = not is_fullscreen
                     if is_fullscreen:
-                        window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+                        window = pygame.display.set_mode(pygame.FULLSCREEN)
                     else:
                         window = pygame.display.set_mode((SCREEN_X, SCREEN_Y), pygame.RESIZABLE)
         
@@ -196,7 +197,7 @@ if __name__ == "__main__":
         else:
             clock.tick(60) 
       
-        game_surface.fill(pygame.Color('#4ca626'))
+        game_surface.fill(pygame.Color(BG_COLOR))
         
         if current_state == "menu":
             main_menu.draw(game_surface)
@@ -205,7 +206,7 @@ if __name__ == "__main__":
         elif current_state in ["settings", "highscore"]:
             game_surface.fill(pygame.Color('darkblue'))
             
-        window.fill(pygame.Color('#4ca626'))
+        window.fill(pygame.Color(BG_COLOR))
         
         scaled_surf = pygame.transform.scale(game_surface, (scaled_w, scaled_h))
         window.blit(scaled_surf, (offset_x, offset_y))
