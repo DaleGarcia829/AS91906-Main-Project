@@ -4,16 +4,18 @@ from mysprite import MySprite
 from imagelist import ImageList
 from gameplay import MainGame
 
-# Screen size setup
-SCREEN_X= 700
-SCREEN_Y= 625
-TILESIZE = 16
-WINDOW_MODE= pygame.RESIZABLE
-FONT_SIZE = 48
+# Screen size setup - Expanded to give players more room to navigate
+SCREEN_X = 640
+SCREEN_Y = 512
+TILESIZE = 32
+WINDOW_MODE = pygame.RESIZABLE
+FONT_SIZE = 36
+
 
 BG_COLOR = ("#4ca626")
 WHITE = ("#F9F6EE")
-
+BLACK = ("#000000")
+SNAKE_COLOR = ("#38b6ff")
 class MainMenu():
     def __init__(self, screen_w, screen_h):
         self._screen_w = screen_w
@@ -23,9 +25,9 @@ class MainMenu():
         
     def _build_menu(self):
         # Setting up button sizes and layout math
-        button_w, button_h = 240, 60
-        start_y = 200
-        spacing = 85
+        button_w, button_h = 180, 45
+        start_y = 150
+        spacing = 65
         # This centers the buttons perfectly on the x-axis
         x_pos = (self._screen_w // 2) - (button_w // 2)
 
@@ -42,7 +44,7 @@ class MainMenu():
         # Drawing the big main title text
         title_font = pygame.font.Font('freesansbold.ttf', FONT_SIZE)
         title_surf = title_font.render("SNAKE GAME!", True, pygame.Color(WHITE))
-        title_rect = title_surf.get_rect(center=(self._screen_w // 2, FONT_SIZE))
+        title_rect = title_surf.get_rect(center=(self._screen_w // 2, 60))
         surface.blit(title_surf, title_rect)
         
         # Draw all 4 buttons from our list
@@ -62,7 +64,8 @@ class Snake ():
         self._y = y
         self._w = w
         self._h = h
-        self._images = ImageList(images, w, h)
+        self._head_image = ImageList(images, w, h)
+        self._body_image = ImageList(images, w, h)
         self._dir = dir
         self._screen = screen
         self._grow = False
@@ -75,28 +78,29 @@ class Snake ():
         self._grow = False
         self._seg_list = []
         
-        # Spawn the snake head and one tail segment to start out
-        self._seg_list.append(MySprite(self._x, self._y, self._w, self._h, self._images, self._screen))
-        self._seg_list.append(MySprite(self._x, self._y + TILESIZE, self._w, self._h, self._images, self._screen))
+        self._seg_list.append(MySprite(self._x, self._y, self._w, self._h, self._head_image, self._screen))
+        self._seg_list.append(MySprite(self._x, self._y + TILESIZE, self._w, self._h, self._body_image, self._screen))
 
     def update(self):
-        # Move the front of the snake by multiplying vectors by tilesize
         self._x += Snake.VECTOR[self._dir][0] * TILESIZE
         self._y += Snake.VECTOR[self._dir][1] * TILESIZE
         
-        # Add a new head at the front of the list
-        self._seg_list.insert(Snake.HEAD, MySprite(self._x, self._y, self._w, self._h, self._images, self._screen))
+        self._seg_list.insert(Snake.HEAD, MySprite(self._x, self._y, self._w, self._h, self._head_image, self._screen))
         
-        # If we didn't eat food, chop off the tail so it looks like it's moving
+        if len(self._seg_list) > 1:
+            self._seg_list[1]._images = self._body_image
+        
         if not self._grow:
             self._seg_list.pop(Snake.TAIL)   
         else: 
             self._grow = False    
 
     def draw(self):
-        # Draw every body part one by one
         for segment in self._seg_list:
-            segment.draw()
+            rect = pygame.Rect(segment._x, segment._y, self._w, self._h)
+            pygame.draw.rect(self._screen, BLACK, rect)
+            pygame.draw.rect(self._screen, SNAKE_COLOR, rect.inflate(-4, -4))
+
 
 # main loop
 if __name__ == "__main__":
@@ -114,9 +118,8 @@ if __name__ == "__main__":
     
     main_menu = MainMenu(SCREEN_X, SCREEN_Y)
     
-    player_snake = Snake(game_surface,500, 50, TILESIZE, TILESIZE, ["images\\test"])
-    
-  
+    player_snake = Snake(game_surface, 500, 50, TILESIZE, TILESIZE, ["images\\snake\\snake", "images\\snake\\snakebody"])
+
     game_screen = MainGame(SCREEN_X, SCREEN_Y, TILESIZE)
     
     clock = pygame.time.Clock()
@@ -214,6 +217,4 @@ if __name__ == "__main__":
         pygame.display.flip()
 
     pygame.quit()
-
-
 
