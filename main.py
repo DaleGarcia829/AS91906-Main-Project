@@ -4,7 +4,7 @@ from mysprite import MySprite
 from imagelist import ImageList
 from gameplay import MainGame
 
-# Screen size setup - Expanded to give players more room to navigate
+# Screen size 
 SCREEN_X = 640
 SCREEN_Y = 512
 TILESIZE = 32
@@ -28,7 +28,7 @@ class MainMenu():
         button_w, button_h = 180, 45
         start_y = 150
         spacing = 65
-        # This centers the buttons perfectly on the x-axis
+        # centres buttons
         x_pos = (self._screen_w // 2) - (button_w // 2)
 
         # Loop through our menu labels to create the buttons automatically
@@ -47,7 +47,7 @@ class MainMenu():
         title_rect = title_surf.get_rect(center=(self._screen_w // 2, 60))
         surface.blit(title_surf, title_rect)
         
-        # Draw all 4 buttons from our list
+        # Draw all 4 buttons 
         for button in self._buttons:
             button.draw(surface)
 
@@ -196,7 +196,7 @@ if __name__ == "__main__":
                 
         if current_state == "playing":
             game_screen.update(player_snake)
-            clock.tick(10) 
+            clock.tick(5.5) 
         else:
             clock.tick(60) 
       
