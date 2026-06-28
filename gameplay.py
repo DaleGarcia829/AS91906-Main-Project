@@ -6,6 +6,7 @@ FONT_COLOR = ("#F9F6EE")
 FOOD_COLOR = ("#FF0000")
 GRID_COLOR_1 = ("#4ca626")
 GRID_COLOR_2 = ("#000000")
+GREY= ("#808080")
 
 class MainGame:
     def __init__(self, screen_w, screen_h, tilesize):
@@ -62,7 +63,7 @@ class MainGame:
             for col in range(self._grid_w):
                 if row == 0 or row == self._grid_h - 1 or col == 0 or col == self._grid_w - 1:
                     tile_rect = pygame.Rect(col * self._tilesize, row * self._tilesize, self._tilesize, self._tilesize)
-                    pygame.draw.rect(surface, pygame.Color("#808080"), tile_rect)
+                    pygame.draw.rect(surface, GREY, tile_rect)
                 elif (row + col) % 2 == 0:
                     tile_rect = pygame.Rect(col * self._tilesize, row * self._tilesize, self._tilesize, self._tilesize)
                     pygame.draw.rect(surface, pygame.Color(GRID_COLOR_2), tile_rect)
