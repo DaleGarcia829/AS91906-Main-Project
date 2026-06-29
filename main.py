@@ -176,10 +176,6 @@ if __name__ == "__main__":
                             if button._text == "Play":
                                 current_state = "playing"
                                 game_screen.start_game(player_snake)
-                            elif button._text == "Settings":
-                                current_state = "settings"
-                            elif button._text == "High Score":
-                                current_state = "highscore"
                             elif button._text == "Quit":
                                 quitting = True
                                 
@@ -206,9 +202,6 @@ if __name__ == "__main__":
             main_menu.draw(game_surface)
         elif current_state == "playing":
             game_screen.draw(game_surface, player_snake)
-        elif current_state in ["settings", "highscore"]:
-            game_surface.fill(pygame.Color('darkblue'))
-            
         window.fill(pygame.Color(BG_COLOR))
         
         scaled_surf = pygame.transform.scale(game_surface, (scaled_w, scaled_h))
