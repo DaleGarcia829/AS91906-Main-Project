@@ -192,7 +192,7 @@ if __name__ == "__main__":
                 
         if current_state == "playing":
             game_screen.update(player_snake)
-            clock.tick(5.5) 
+            clock.tick(10) 
         else:
             clock.tick(60) 
       

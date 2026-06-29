@@ -1,14 +1,19 @@
+# imports
 import pygame
 import random
 
+# constants
 FONT_SIZE = 18
 FONT_COLOR = ("#F9F6EE")
 FOOD_COLOR = ("#FF0000")
 GRID_COLOR_1 = ("#4ca626")
 GRID_COLOR_2 = ("#000000")
-GREY= ("#808080")
+GREY_BORDER = ("#808080")
+FONT_STYLE = ("freesansbold.ttf")
 
+#Main Game class
 class MainGame:
+    # innit function
     def __init__(self, screen_w, screen_h, tilesize):
         self._screen_w = screen_w
         self._screen_h = screen_h
@@ -20,7 +25,8 @@ class MainGame:
         self.score = 0
         self.game_over = False
         self._food_pos = [0, 0]
-       
+
+    # start game function   
     def start_game(self, snake_instance):
         self.score = 0
         self.game_over = False
@@ -30,6 +36,7 @@ class MainGame:
        
         self.food_spawn(snake_instance)
 
+    # food spawn function
     def food_spawn(self, snake_instance):
         while True:
             x = random.randint(1, self._grid_w - 2) * self._tilesize
@@ -44,7 +51,7 @@ class MainGame:
             if not collision:
                 self._food_pos = [x, y]
                 break
-
+    # controls function
     def handle_input(self, event, snake_instance):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP and snake_instance._dir != 1:
@@ -55,7 +62,7 @@ class MainGame:
                 snake_instance._dir = 2                                  
             elif event.key == pygame.K_RIGHT and snake_instance._dir != 2:
                 snake_instance._dir = 3                                  
-
+    # draw function 
     def draw(self, surface, snake_instance):
         surface.fill(pygame.Color(GRID_COLOR_1))
        
@@ -63,7 +70,7 @@ class MainGame:
             for col in range(self._grid_w):
                 if row == 0 or row == self._grid_h - 1 or col == 0 or col == self._grid_w - 1:
                     tile_rect = pygame.Rect(col * self._tilesize, row * self._tilesize, self._tilesize, self._tilesize)
-                    pygame.draw.rect(surface, GREY, tile_rect)
+                    pygame.draw.rect(surface, GREY_BORDER, tile_rect)
                 elif (row + col) % 2 == 0:
                     tile_rect = pygame.Rect(col * self._tilesize, row * self._tilesize, self._tilesize, self._tilesize)
                     pygame.draw.rect(surface, pygame.Color(GRID_COLOR_2), tile_rect)
@@ -73,7 +80,7 @@ class MainGame:
 
         snake_instance.draw()
 
-        font = pygame.font.Font('freesansbold.ttf', FONT_SIZE)
+        font = pygame.font.Font(FONT_STYLE, FONT_SIZE)
         score_surf = font.render(f"Score: {self.score}", True, FONT_COLOR)
         surface.blit(score_surf, (20, 20))
 
@@ -91,7 +98,7 @@ class MainGame:
             hint_surf = hint_font.render("Press SPACE to Restart or ESC for Menu", True, FONT_COLOR)
             hint_rect = hint_surf.get_rect(center=(self._screen_w // 2, self._screen_h // 2 + 25))
             surface.blit(hint_surf, hint_rect)
-
+    # snake head
     def update(self, snake_instance):
         if self.game_over:
             return

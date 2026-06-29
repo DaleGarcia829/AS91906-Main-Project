@@ -1,12 +1,13 @@
 import pygame
-import
 
 class Enemy():
     def __init__ (self,x,y,width,height,enemy):
-        self._x
-        self._y
-        self._width
-        
+        self._x=x
+        self._y= y
+        self._width= width
+        self._height= height
+        self._enemy= enemy
+
 
 
 
@@ -27,4 +28,3 @@ class Enemy():
 # draw(surface)
 # position()
 # speed()
-

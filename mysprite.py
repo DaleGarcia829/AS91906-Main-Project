@@ -91,9 +91,9 @@ class MySprite():
             pass
 
     def set_animation(self, start_frame= 0, end_frame=0, delay=0, repeat=-1):
-        if start_frame >=0 and len(self._images.images):
+        if start_frame >=0 and hasattr(self._images, 'images') and len(self._images.images):
             self._start_frame = start_frame
-        if end_frame >=0 and len(self._images.images) and start_frame <= end_frame:
+        if end_frame >=0 and hasattr(self._images, 'images') and len(self._images.images) and start_frame <= end_frame:
             self._end_frame = end_frame
         if delay > 0:
             self._delay = delay
@@ -122,7 +122,10 @@ class MySprite():
 
 
     def draw(self):
-        self._screen.blit(self._images.images[self._current_frame], self.get_rect())
+        if hasattr(self._images, 'images') and len(self._images.images) > 0:
+            if self._current_frame >= len(self._images.images):
+                self._current_frame = 0
+            self._screen.blit(self._images.images[self._current_frame], self.get_rect())
         
 
 
@@ -149,7 +152,7 @@ if __name__=="__main__":
 
     spritelist = []
     spritelist.append(MySprite(TEXT_X+TEXT_W,TEXT_Y,TEXT_W,TEXT_H, image_obj, screen))
-    spritelist[-1].set_animation(0, 3, 0.1, True)
+    spritelist[-1].set_animation(0, 5, 0.025, True)
     quitting = False
 
     # main program loop
